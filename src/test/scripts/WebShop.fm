@@ -1,0 +1,15 @@
+define {
+    featurett( name: "My First WebShop" ) {
+        optional {
+            featurett( name: "Customer Self Management" )
+        }
+
+        mandatory {
+            featurett( name: "Security" ) {
+                mandatory {
+                    featurett(name: "Customer Authentication")
+                }
+            }
+        }
+    }
+}

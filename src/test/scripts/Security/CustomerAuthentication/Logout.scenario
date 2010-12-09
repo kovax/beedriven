@@ -1,0 +1,8 @@
+scenario "Logout", {
+    given "A registered Customer is logged in"
+    when "Customer clicks the logout link"
+    then "The username from the topright corner removed"
+    and "My Account and Order History menu options are removed"
+}
+
+

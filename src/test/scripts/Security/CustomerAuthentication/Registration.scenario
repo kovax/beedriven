@@ -1,0 +1,16 @@
+scenario "New Customers should receive discounts", {
+    description '''Customers enters type (animal owner/veterian/professional), referrer id, 
+                   name, user id (email) with password and accepts policy'''
+
+    action '''1. check mandatory fields
+              2. show popup, if policy checkbox was not selected
+              3. new user discount (promotion) is created and Customers automatically for the first order
+              4. email used for login id is set as primary email address'''
+
+    given "a newly registered Customers"
+    when "the Customers adds a product to a basket"
+    then "the Customers shall see a 5% discount applied to their basket"
+    then "the Customers shall be able to confirm the order"
+    then "the Customers shall receive an email containing the order"
+    then "MA shall be able to fullfill the order"
+}
