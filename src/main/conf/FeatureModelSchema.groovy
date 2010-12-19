@@ -1,46 +1,28 @@
 mbObjectKeys = [
-    (org.beedom.beedriven.Product) : {p-> "${p.name}_${p.version}"},
+    //(org.beedom.beedriven.Feature) : {f-> "${f.name}_${f.version}"},
     (org.beedom.beedriven.Feature) : "name"
     ]
 
-def bddFeatureSchema
-
-bddFeatureContSchema = metaBuilder.define {
-    fmContainer(factory: org.beedom.beedriven.FeatureContainer) {
+def bddFeatureSchema = metaBuilder.define {
+    fmFeature(factory: org.beedom.beedriven.model.Feature) {
         properties {
             name()
+            description()
+            version()
         }
         collections {
             optional {
-                fmFeature(schema: bddFeatureSchema, factory: org.beedom.beedriven.Feature)
+                fmFeature(schema: "fmFeature")
             }
             mandatory {
-                featurett(schema: bddFeatureSchema, factory: org.beedom.beedriven.Feature)
+                fmFeature(schema: "fmFeature")
             }
             alternative {
-                featurett(schema: bddFeatureSchema, factory: org.beedom.beedriven.Feature)
+                fmFeature(schema: "fmFeature")
             }
             or {
-                featurett(schema: bddFeatureSchema, factory: org.beedom.beedriven.Feature)
+                fmFeature(schema: "fmFeature")
             }
         }
     }
 }
-
-
-bddFeatureSchema = metaBuilder.define {
-    fmFeature(schema: bddFeatureContSchema, factory: org.beedom.beedriven.Feature) {
-        properties {
-            description()
-        }
-    }
-}
-
-def bddProductSchema = metaBuilder.define {
-    fmProduct(schema: bddFeatureContSchema, factory: org.beedom.beedriven.Product) {
-        properties {
-            version()
-        }
-    }
-}
-*/

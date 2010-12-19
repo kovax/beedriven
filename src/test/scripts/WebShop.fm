@@ -1,15 +1,16 @@
 define {
-    featurett( name: "My First WebShop" ) {
+    fmFeature( name: "My First WebShop", version: "0.1" ) {
         optional {
-            featurett( name: "Customer Self Management" )
+            fmFeature( name: "Customer Self Management" )
         }
 
         mandatory {
-            featurett( name: "Security" ) {
+            fmFeature( name: "Security" ) {
                 mandatory {
-                    featurett(name: "Customer Authentication")
+                    fmFeature(name: "Customer Authentication")
                 }
             }
         }
     }
 }
+

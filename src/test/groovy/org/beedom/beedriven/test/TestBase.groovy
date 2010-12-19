@@ -3,7 +3,6 @@ package org.beedom.beedriven.test
 
 import org.beedom.dslforge.DSLEngine
 
-
 import groovy.lang.Binding
 
 import org.junit.Before
