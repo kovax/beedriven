@@ -1,28 +1,50 @@
 mbObjectKeys = [
-    //(org.beedom.beedriven.Feature) : {f-> "${f.name}_${f.version}"},
-    (org.beedom.beedriven.Feature) : "name"
+    //(org.beedom.beedriven.model.FeatureRef) : {f-> "${f.name}_${f.version}"},
+    (org.beedom.beedriven.model.FeatureRef)   : "name",
+    (org.beedom.beedriven.model.ScenarioRef)  : "name",
+    (org.beedom.beedriven.model.FeatureModel) : "name"
     ]
 
-def bddFeatureSchema = metaBuilder.define {
-    fmFeature(factory: org.beedom.beedriven.model.Feature) {
+metaBuilder.define {
+    ScenarioRef(factory: org.beedom.beedriven.model.ScenarioRef) {
+
         properties {
             name()
-            description()
-            version()
+            implemented()
+            automated()
+            executed()
+            failed()
         }
+    }
+        
+    FeatureRef(factory: org.beedom.beedriven.model.FeatureRef) {
+        properties {
+            name()
+        }
+
         collections {
-            optional {
-                fmFeature(schema: "fmFeature")
+            scenarios(key:'name') {
+                ScenarioRef(schema: "ScenarioRef")
             }
-            mandatory {
-                fmFeature(schema: "fmFeature")
+            
+            optional(key:'name') {
+                FeatureRef(schema: "FeatureRef")
             }
-            alternative {
-                fmFeature(schema: "fmFeature")
+            mandatory(key:'name') {
+                FeatureRef(schema: "FeatureRef")
             }
-            or {
-                fmFeature(schema: "fmFeature")
+            alternative(key:'name') {
+                FeatureRef(schema: "FeatureRef")
             }
+            or(key:'name') {
+                FeatureRef(schema: "FeatureRef")
+            }
+        }
+    }
+    
+    ProductRef(schema: 'FeatureRef', factory: org.beedom.beedriven.model.FeatureModel) {
+        properties {
+            version()
         }
     }
 }

@@ -1,18 +1,17 @@
 package org.beedom.beedriven.delegates
 
 
-
-
-import org.beedom.dslforge.BindingConvention;
-
-
 class ScenarioDelegate extends DelegateBase {
 
-    public ScenarioDelegate(String desc) {
-        println "ScenarioDelegate: $desc"
+    def static dslKey = "scenario"
+
+    public ScenarioDelegate() {
+        init(null)
     }
 
-    def static dslKey = "scenario"
+    public ScenarioDelegate(String name) {
+        init(name)
+    }
 
     /**
      * Alias list for methods. The current values are Hungarian translation
@@ -25,9 +24,6 @@ class ScenarioDelegate extends DelegateBase {
                            when:  ["amikor", "although"],
                            then:  ["akkor", "consequently"]]
 
-    public ScenarioDelegate() {
-    }
-    
     def given(String desc) {
     	given(desc,null)
     }

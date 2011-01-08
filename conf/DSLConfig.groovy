@@ -3,9 +3,9 @@ environments {
          dsl.emcInheritance = true
          dsl.scripts = 'src/test/scripts'
          dsl.evaluate = ["evaluate", "include"]
-         dsl.delegates = [org.beedom.beedriven.delegates.MetaBuilderDelegate,
+         mbSchemaFiles = ["src/main/conf/MetaBuilderSchema.groovy"]
+         dsl.delegates = [[dslKey: "FeatureModel", clazz: org.beedom.dslforge.integrations.MetaBuilderDelegate],
                           org.beedom.beedriven.delegates.ScenarioDelegate,
                           org.beedom.beedriven.delegates.FeatureDelegate]
-         //dsl.categories = [org.beedom.dslforge.test.decorators.ShallCategory]
      }
 }

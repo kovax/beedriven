@@ -1,0 +1,49 @@
+apply plugin: 'groovy'
+apply plugin: 'project-report'
+apply plugin: org.beedom.beedriven.gradle.BeeDrivenPlugin
+
+version = '0.1'
+
+repositories {
+    mavenCentral()
+    flatDir name: 'localRepository', dirs: 'lib'
+    flatDir name: 'groovytools', dirs: '/home/kovax/groovytools/lib'
+    flatDir name: 'dslforge', dirs: '../dslforge/build/libs'
+}
+
+dependencies {
+    groovy group: 'org.codehaus.groovy', name: 'groovy', version: '1.7.+'
+    compile gradleApi()
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.2'
+    compile group: 'groovytools-builder', name: 'groovytools-builder', version: '1.1.6'
+    compile group: 'beedom', name: 'dslforge', version: '1.0'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+tree = fileTree {
+    dir 'src/test/scripts'
+    include '**/*.feature'
+    include '**/*.scenario'
+}
+
+buildscript {
+    dependencies {
+        classpath files('/home/kovax/beedom/gitworkspace/beedriven/build/libs/beedriven-0.1.jar')
+    }
+}
+
+task('runBee', dependsOn: 'testClasses', type: JavaExec) {
+    main = 'org.beedom.dslforge.DSLEngine'
+    classpath = sourceSets.test.runtimeClasspath
+    args '/home/kovax/beedom/gitworkspace/beedriven/src/test/scripts/Security/Security.feature'
+}
+
+
+beedriven {
+    scenario "Remove product from basket", {
+        given "logged in customer"
+        and "the customer has checked out a basket with 1 item"
+        when "the customer removes that item from the basket"
+        then "the basket is empty"
+    }
+}

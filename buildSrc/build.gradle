@@ -1,0 +1,17 @@
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+    flatDir name: 'localRepository', dirs: 'lib'
+    flatDir name: 'groovytools', dirs: '/home/kovax/groovytools/lib'
+    flatDir name: 'dslforge', dirs: '../dslforge/build/libs'
+}
+
+dependencies {
+    groovy group: 'org.codehaus.groovy', name: 'groovy', version: '1.7.+'
+    compile gradleApi()
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.2'
+    compile group: 'groovytools-builder', name: 'groovytools-builder', version: '1.1.6'
+    compile group: 'beedom', name: 'dslforge', version: '1.0'
+}
+

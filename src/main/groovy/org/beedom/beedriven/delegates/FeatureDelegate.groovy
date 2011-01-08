@@ -8,14 +8,12 @@ class FeatureDelegate extends DelegateBase {
 	
     def static dslKey = "feature"
 
-    def nesting = 0
-
 	public FeatureDelegate() {
+        init(null)
     }
 
-    public FeatureDelegate(String desc) {
-        //println "FeatureDelegate()"
-        init(desc)
+    public FeatureDelegate(String name) {
+        init(name)
     }
     
     
@@ -41,5 +39,13 @@ class FeatureDelegate extends DelegateBase {
 
     def i_want(String desc, Closure cl) {
         doThisAlways("i_want", desc, cl)
+    }
+    
+    def requirement(String desc) {
+        requirement(desc,null)
+    }
+
+    def requirement(String desc, Closure cl) {
+        doThisAlways("requirement", desc, cl)
     }
 }

@@ -1,4 +1,4 @@
-feature "", {
+feature "Shipping Management", {
     
     scenario "Set default shipping destination address", {
         given "Logged in user"

@@ -10,7 +10,9 @@ class FeatureModelTests extends TestBase {
 		dsle.run("WebShop.fm")
 
         assert context.myFirstWebShop
-        assert context.myFirstWebShop.optional[0]
-        assert context.myFirstWebShop.mandatory[0]
+        assert context.myFirstWebShop.optional.'Customer Self Management'
+        assert context.myFirstWebShop.mandatory['Security']
+        assert context.myFirstWebShop.mandatory.Security.mandatory.'Customer Authentication'
+        assert context.myFirstWebShop.mandatory.Security.mandatory.'Customer Authentication'.scenarios.Login
 	}
 }

@@ -1,13 +1,35 @@
-define {
-    fmFeature( name: "My First WebShop", version: "0.1" ) {
+FeatureModel {
+    ProductRef( name: "My First WebShop", version: "0.1" ) {
         optional {
-            fmFeature( name: "Customer Self Management" )
+            FeatureRef( name: "Customer Self Management" ) {
+                mandatory {
+                    FeatureRef( name: "Address Management" )
+                    FeatureRef( name: "Shipping Management" )
+                }
+            }
         }
 
         mandatory {
-            fmFeature( name: "Security" ) {
+            FeatureRef( name: "Security" ) {
                 mandatory {
-                    fmFeature(name: "Customer Authentication")
+                    FeatureRef(name: "Customer Authentication") {
+                        scenarios {
+                            ScenarioRef(name: "Login")
+                            ScenarioRef(name: "Logout")
+                            ScenarioRef(name: "Change Password") {
+                                implemented = true
+                                automated = false
+                                executed  = false
+                                failed = false
+                            }
+                            ScenarioRef(name: "Forgotten password") {
+                                implemented = true
+                                automated = false
+                                executed  = false
+                                failed = false
+                            }
+                        }
+                    }
                 }
             }
         }
