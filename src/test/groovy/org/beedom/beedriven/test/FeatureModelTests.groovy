@@ -10,9 +10,18 @@ class FeatureModelTests extends TestBase {
 		dsle.run("WebShop.fm")
 
         assert context.myFirstWebShop
-        assert context.myFirstWebShop.optional.'Customer Self Management'
-        assert context.myFirstWebShop.mandatory['Security']
-        assert context.myFirstWebShop.mandatory.Security.mandatory.'Customer Authentication'
-        assert context.myFirstWebShop.mandatory.Security.mandatory.'Customer Authentication'.scenarios.Login
+        assert context.myFirstWebShop.optional.CustomerSelfManagement
+        assert context.myFirstWebShop.mandatory.Security.mandatory.CustomerAuthentication.scenarios.Login
 	}
+    
+    @Test
+    public void scanRoot() {
+        dsle.run("WebShop.fm")
+
+        context.myFirstWebShop.scanFiles()
+        
+        println "-----------------------------------"
+
+        context.myFirstWebShop.scanFiles()
+    }
 }

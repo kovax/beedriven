@@ -3,6 +3,9 @@ package org.beedom.beedriven.model
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * 
@@ -10,10 +13,12 @@ import java.util.Map;
  *
  */
 class FeatureRef {
+    
+    protected static Logger log = LoggerFactory.getLogger(FeatureRef.class);
 
     /**
      * The name of the Feature
-     * Must be identcal with the Feature file name (without exetension) 
+     * Must be identical with the Feature file name (without extension) 
      * 
      * TODO: aply rule to accept characters which are valid for file namea
      */
@@ -52,4 +57,23 @@ class FeatureRef {
     public File createFeatureFile(String name) {
     }
 
+    private static List getFeatureRef(FeatureRef currentFeature, String name) {
+        log.info "Searching $name in ${currentFeature.name}"
+
+        if(currentFeature.mandatory."$name") {
+            return ["mandatory", currentFeature.mandatory."$name"]
+        }
+        else if(currentFeature.optional."$name") {
+            return ["optional", currentFeature.optional."$name"]
+        }
+        else if(currentFeature.alternative."$name") {
+            return ["alternative", currentFeature.alternative."$name"]
+        }
+        else if(currentFeature.or."$name") {
+            return ["or", currentFeature.or."$name"]
+        }
+        else {
+            return null
+        }
+    }
 }
