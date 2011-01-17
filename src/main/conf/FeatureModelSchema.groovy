@@ -6,20 +6,23 @@ mbObjectKeys = [
     ]
 
 metaBuilder.define {
-    ScenarioRef(factory: org.beedom.beedriven.model.ScenarioRef) {
-
+    FeatureModelElement(factory: org.beedom.beedriven.model.FeatureModelElement) {
         properties {
             name()
+        }
+    }
+    
+    ScenarioRef(schema: 'FeatureModelElement', factory: org.beedom.beedriven.model.ScenarioRef) {
+        properties {
             implemented()
             automated()
             executed()
             failed()
         }
     }
-        
-    FeatureRef(factory: org.beedom.beedriven.model.FeatureRef) {
+
+    FeatureRef(schema: 'FeatureModelElement', factory: org.beedom.beedriven.model.FeatureRef) {
         properties {
-            name()
         }
 
         collections {

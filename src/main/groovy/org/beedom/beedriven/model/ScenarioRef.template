@@ -1,0 +1,6 @@
+ScenarioRef( name: ${name} ) {
+    implemented = ${implemented}
+    automated = ${automated}
+    executed  = ${executed}
+    failed = ${failed}
+}

@@ -1,19 +1,11 @@
 package org.beedom.beedriven.model
 
+import groovy.xml.MarkupBuilder;
+
 import java.io.File;
 
-class ScenarioRef {
-    
-    /**
-     * The name of the Scenario
-     * Must be identcal with the Scenario file name (without exetension) 
-     * or with name of the Scenario inside of the Feature file
-     * 
-     * TODO: aply rule to accept characters which are valid for file namea
-     */
-    String name = ""
+class ScenarioRef extends FeatureModelElement {
 
-    
     /**
      * The implementation of the Scenario (consequently the Feature) was done or not
      * 
@@ -40,12 +32,33 @@ class ScenarioRef {
      */
     Boolean failed = false
 
+
+    /**
+     * This is only for MetaBuilder support
+     */
+    ScenarioRef() {
+    }
+
+
+    /**
+     * 
+     */
+    ScenarioRef(File f) {
+        assert f && f.exists() && f.isFile(), "File must exists"
+        dslFile = f
+        name = getNameFromFile(f)
+    }
+
+
+    public void dumpToMetaBuilder(mbBuilder) {
     
+    }
+
     /**
      * 
      * @param name
      */
-    public void createScenario(String name) {
+    private void createScenario(String name) {
     }
 
     

@@ -1,0 +1,27 @@
+${SchemaName}( name: ${name} ) {
+    <% if (scenarioList) { %>
+    scenarios {
+        ${scenarioList}
+    }
+    <% } %>
+    <% if (mandatoryList) { %>
+    mandatory {
+        ${mandatoryList}
+    }
+    <% } %>
+    <% if (optionalList) { %>
+    optional {
+        ${optionalList}
+    }
+    <% } %>
+    <% if (alternativeList) { %>
+    alternative {
+        ${alternativeList}
+    }
+    <% } %>
+    <% if (orList) { %>
+    or {
+        ${orList}
+    }
+    <% } %>
+}
