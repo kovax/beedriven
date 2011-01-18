@@ -24,14 +24,4 @@ class FeatureModel extends FeatureRef {
      */
     String  version = ""
     
-    
-    def dumpFM(String dir) {
-
-        def destFile = new FileOutputStream(dir+'/${name}_dump.fm')
-        def destWriter = new OutputStreamWriter(destFile,"UTF-8")
-        def xml = new MarkupBuilder(destWriter)
-
-        destWriter << '<?xml version="1.0" encoding="UTF-8"?>'
-    }
-
 }

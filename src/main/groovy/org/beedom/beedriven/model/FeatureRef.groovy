@@ -11,6 +11,7 @@ import javax.naming.InvalidNameException;
 
 import java.io.File;
 
+import org.beedom.beedriven.model.FeatureModelElement.Type
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,7 @@ class FeatureRef extends FeatureModelElement {
     protected static final template = FeatureRef.class.getResource("FeatureRef.template")
     
     protected static final templateName = "FeatureRef"
+    
     
 
     /**
@@ -230,20 +232,46 @@ class FeatureRef extends FeatureModelElement {
      * @param cl
      * @return
      */
-    private def traverseMap( String mapName, Closure cl ) {
+    private def traverseMap( Map options, String mapName, Closure cl ) {
+        final Type type = options.type ?: Type.ALL //Elvis operator
+        
         this."$mapName".each { String name, modelElement ->
             if(modelElement instanceof FeatureRef ) {
-                modelElement.traverse(cl)
+
+                //Goto deeper in the tree
+                modelElement.traverse(options, cl)
+
+                //Execute closue for the choosen type only
+                if(type == Type.ALL || type == Type.FEATURE) {
+                    cl(mapName, modelElement)
+                }
             }
-            cl(mapName, modelElement)
+            else if(modelElement instanceof ScenarioRef) {
+                //Execute closue for the choosen type only
+                if(type == Type.ALL || type == Type.SCENARIO) {
+                    cl(mapName, modelElement)
+                }
+            }
+            else {
+                throw new RuntimeException("Unhandled class: " + modelElement.class.name)
+            }
         }
     }
- 
+
+    
     def traverse(Closure cl) {
-        traverseMap("mandatory", cl)
-        traverseMap("optional", cl)
-        traverseMap("alternative", cl)
-        traverseMap("or", cl)
-        traverseMap("scenarios", cl)
+        traverse([:], cl)
+    }
+
+
+    def traverse(Map options, Closure cl) {
+        log.info "options: " + options
+        
+        traverseMap(options, "mandatory", cl)
+        traverseMap(options, "optional", cl)
+        traverseMap(options, "alternative", cl)
+        traverseMap(options, "or", cl)
+        
+        traverseMap(options, "scenarios", cl)
     }
 }

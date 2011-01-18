@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 abstract class FeatureModelElement {
 
     protected static final templateName = "FeatureModelElement" 
-    
+
+    public enum Type { ALL, FEATURE, SCENARIO }
+
     /**
      * The name of the Scenario or Feature.
      * Must be identcal with the Scenario/Feature file name (without extension) 

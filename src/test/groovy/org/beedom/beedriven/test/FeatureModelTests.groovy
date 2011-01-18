@@ -3,6 +3,7 @@ package org.beedom.beedriven.test
 
 import org.beedom.beedriven.model.FeatureModelElement;
 import org.junit.Test
+import org.beedom.beedriven.model.FeatureModelElement.Type
 
 
 
@@ -48,14 +49,28 @@ class FeatureModelTests extends TestBase {
             }
         }
     }
-    
+
     @Test
-    public void save() {
+    public void traverseFeatures() {
         dsle.run("WebShop.fm")
         context.myFirstWebShop.scanFiles(new File("src/test/scripts"))
+        
+        context.myFirstWebShop.traverse( type: Type.FEATURE ) { String type, modelElement ->
+            println modelElement.dslFile
+            if(modelElement.dslFile)
+                assert modelElement.dslFile.name.endsWith(".feature")
+        }
+    }
 
-        context.myFirstWebShop.traverse { String type, modelElement ->
-            println type+","+modelElement.name+","+modelElement.dslFile
+    @Test
+    public void traverseScenarios() {
+        dsle.run("WebShop.fm")
+        context.myFirstWebShop.scanFiles(new File("src/test/scripts"))
+        
+        context.myFirstWebShop.traverse( type: Type.SCENARIO ) { String type, modelElement ->
+            println modelElement.dslFile
+            if(modelElement.dslFile)
+                assert modelElement.dslFile.name.endsWith(".scenario")
         }
     }
 
