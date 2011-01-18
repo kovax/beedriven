@@ -1,0 +1,6 @@
+scenario "Delete phone", {
+    given "Logged in user"
+    given "User is on the profile page"
+    when "User clicks the remove button next to any of the phone numbers"
+    then "The selected phone number should be removed from the contact information section"
+}

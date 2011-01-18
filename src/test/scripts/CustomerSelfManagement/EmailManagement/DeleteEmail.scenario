@@ -1,0 +1,7 @@
+
+scenario "Delete Email", {
+    given "Logged in user"
+    given "User is on the profile page"
+    when "User clicks the remove button next to any of the email addresses"
+    then "The selected email address should be removed from the contact information section"
+}

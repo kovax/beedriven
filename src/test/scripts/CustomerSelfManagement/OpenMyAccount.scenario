@@ -1,0 +1,5 @@
+scenario "Open My Account", {
+    given "Logged in Customer"
+    when "User clicks the 'My Account' option on the main page"
+    then "User profile page should appear"
+}

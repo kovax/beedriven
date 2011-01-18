@@ -1,0 +1,6 @@
+scenario "Delete credit card", {
+    given "Logged in user"
+    given "User is on the profile page"
+    when "User clicks the remove button next to any of the credit cards"
+    then "The selected credit card should be removed from the payment information section"
+}

@@ -1,0 +1,6 @@
+scenario "Delete Address", {
+    given "Logged in user"
+    and "User is on the profile page"
+    when "User clicks the remove button next to any of the addresses"
+    then "The selected address should be removed from the contact information section"
+}

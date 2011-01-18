@@ -1,5 +1,8 @@
 feature "Shipping Management", {
-    
+    in_order "to use webshop"
+    as_a "customer"
+    i_want "to manage my ahipping address"
+
     scenario "Set default shipping destination address", {
         given "Logged in user"
         given "User is on the Profile page"

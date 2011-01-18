@@ -1,0 +1,11 @@
+scenario "Edit Address", {
+    given "Logged in user"
+    given "User is on the Edit Contact Information page"
+    when "User fills every field correctly"
+    then "Page should be redirected to the profile page"
+    and "the updated address visible in the contact information section"
+    and "the updated fields are truly updated"
+    
+    when "User enters any incorrect value into any of the fields"
+    then "Error message describing the error should be showed"
+}

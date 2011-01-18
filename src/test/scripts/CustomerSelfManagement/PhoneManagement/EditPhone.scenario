@@ -1,0 +1,11 @@
+
+scenario "Edit phone", {
+    given "Logged in user"
+    given "User is on the Edit Contact Information page"
+    when "User fills every field correctly"
+    then "Page should be redirected to the profile page"
+    and "with the updated phone number visible in the contact information section"
+    and "the updated fields are truly updated"
+    when "User enters any incorrect value into any of the fields"
+    then "Error message describing the error should be shown"
+}
