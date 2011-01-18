@@ -1,0 +1,8 @@
+scenario "Edit web page", {
+    given "Logged in user"
+    given "User is on the Edit Contact Information page"
+    when "User fills every field correctly"
+    then "Page should be redirected to the profile page, with the updated Web Url/Address visible in the contact information section"
+    when "User enters any incorrect value into any of the fields"
+    then "Error message describing the error should be shown"
+}
