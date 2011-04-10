@@ -1,7 +1,7 @@
 FeatureModel {
     ProductRef( name: "MyFirstWebShop", version: "0.1" ) {
         optional {
-            FeatureRef( name: "CustomerSelfManagement" ) {
+            FeatureRef( name: "CustomerSelfManagement", selected: true ) {
                 mandatory {
                     FeatureRef( name: "AddressManagement" )
                     FeatureRef( name: "ShippingManagement" )

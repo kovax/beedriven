@@ -13,7 +13,7 @@ class DelegateBase {
             name = n
         }
         nesting++
-        println "init: $name $nesting."
+        println "$name: initialise - newsting level = $nesting."
     }
     
     def destroy() {
@@ -21,14 +21,14 @@ class DelegateBase {
     }
 
     def doThisAlways(String method, String desc, Closure cl ) {
-        doThisAlways(null, null, method, desc, cl)
+        doThisAlways(null, method, desc, cl)
     }
 
-    def doThisAlways(String dslAlias, Boolean runClosure, String method, String desc, Closure cl ) {
+    def doThisAlways(String dslAlias, String method, String desc, Closure cl ) {
         if(dslAlias) println "$dslAlias($method) $name - $desc"
         else println "$name: $method - $desc"
 
-        if(cl && runClosure) {
+        if(cl && !context.dryRun) {
             cl()
         }
     }

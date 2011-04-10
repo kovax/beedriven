@@ -2,17 +2,20 @@ package org.beedom.beedriven.test
 
 
 import org.beedom.beedriven.model.FeatureModelElement;
+import org.junit.Before;
 import org.junit.Test
 import org.beedom.beedriven.model.FeatureModelElement.Type
+import org.beedom.beedriven.model.FeatureRef
+import org.beedom.beedriven.model.ScenarioRef
 
 
 
 class FeatureModelTests extends TestBase {
-
+    
 	@Test
 	public void loadModel() {
-		dsle.run("WebShop.fm")
-
+        dsle.run("WebShop.fm")
+        
         assert context.myFirstWebShop
         assert context.myFirstWebShop.optional.CustomerSelfManagement
         assert context.myFirstWebShop.mandatory.Security.mandatory.CustomerAuthentication.scenarios.Login
@@ -39,10 +42,11 @@ class FeatureModelTests extends TestBase {
         assert context.myFirstWebShop.optional.CustomerSelfManagement.mandatory.CreditCardManagement
         assert context.myFirstWebShop.optional.CustomerSelfManagement.mandatory.WebPageManagement
         
-        
+        //traverse all features and scenarios
         context.myFirstWebShop.traverse { String type, modelElement -> 
+            //println modelElement.dslFile
             if(modelElement.name == "ForgottenPassword") {
-                assert !modelElement.dslFile
+                assert !modelElement.dslFile //There is no ForgottenPassword.scenario
             }
             else {
                 assert modelElement.dslFile
@@ -56,7 +60,7 @@ class FeatureModelTests extends TestBase {
         context.myFirstWebShop.scanFiles(new File("src/test/scripts"))
         
         context.myFirstWebShop.traverse( type: Type.FEATURE ) { String type, modelElement ->
-            println modelElement.dslFile
+            assert modelElement instanceof FeatureRef
             if(modelElement.dslFile)
                 assert modelElement.dslFile.name.endsWith(".feature")
         }
@@ -68,10 +72,9 @@ class FeatureModelTests extends TestBase {
         context.myFirstWebShop.scanFiles(new File("src/test/scripts"))
         
         context.myFirstWebShop.traverse( type: Type.SCENARIO ) { String type, modelElement ->
-            println modelElement.dslFile
+            assert modelElement instanceof ScenarioRef
             if(modelElement.dslFile)
                 assert modelElement.dslFile.name.endsWith(".scenario")
         }
     }
-
 }

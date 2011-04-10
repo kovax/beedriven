@@ -9,6 +9,7 @@ metaBuilder.define {
     FeatureModelElement(factory: org.beedom.beedriven.model.FeatureModelElement) {
         properties {
             name()
+            selected()
         }
     }
     

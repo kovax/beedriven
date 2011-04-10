@@ -1,6 +1,7 @@
 package org.beedom.beedriven.model
 
 import groovy.text.GStringTemplateEngine;
+
 import groovy.xml.MarkupBuilder;
 
 import java.util.List;
@@ -12,8 +13,11 @@ import javax.naming.InvalidNameException;
 import java.io.File;
 
 import org.beedom.beedriven.model.FeatureModelElement.Type
+import static org.beedom.beedriven.model.FeatureModelElement.Type.*
+
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactory
+import org.beedom.dslforge.DSLEngine;
 
 
 /**
@@ -28,8 +32,7 @@ class FeatureRef extends FeatureModelElement {
     protected static final template = FeatureRef.class.getResource("FeatureRef.template")
     
     protected static final templateName = "FeatureRef"
-    
-    
+
 
     /**
      * This is only for MetaBuilder support
@@ -100,31 +103,41 @@ class FeatureRef extends FeatureModelElement {
     }
 
 
+    /**
+     * 
+     */
     private Closure sortByTypeThenName = { a, b ->
         a.isFile() != b.isFile() ? a.isFile() <=> b.isFile() : a.name <=> b.name
     }
+    
 
-    private static Map getSubFeature(FeatureRef currentFeature, String name) {
-        log.info "Searching $name in ${currentFeature.name}"
-
-        if(currentFeature.mandatory."$name") {
-            return [type: "mandatory", ref: currentFeature.mandatory."$name"]
+    /**
+     * 
+     * @param feature
+     * @param name
+     * @return
+     */
+    private static Map getSubFeature(FeatureRef feature, String name) {
+        log.info "Searching subfeature $name in ${feature.name}"
+        
+        if(feature.mandatory."$name") {
+            return [type: "mandatory", ref: feature.mandatory."$name"]
         }
-        else if(currentFeature.optional."$name") {
-            return [type: "optional", ref: currentFeature.optional."$name"]
+        else if(feature.optional."$name") {
+            return [type: "optional", ref: feature.optional."$name"]
         }
-        else if(currentFeature.alternative."$name") {
-            return [type: "alternative", ref: currentFeature.alternative."$name"]
+        else if(feature.alternative."$name") {
+            return [type: "alternative", ref: feature.alternative."$name"]
         }
-        else if(currentFeature.or."$name") {
-            return [type: "or", ref: currentFeature.or."$name"]
+        else if(feature.or."$name") {
+            return [type: "or", ref: feature.or."$name"]
         }
         else {
             return null
         }
     }
 
-    
+
     /**
      * 
      * @param dir
@@ -133,7 +146,7 @@ class FeatureRef extends FeatureModelElement {
 
         dir.traverse( sort: sortByTypeThenName, maxDepth: 0 ) { File f ->
             log.debug f.toURI().toURL().toString()
-            def fullName = f.getName()
+            def fullName = f.name
 
             if( f.isFile() ) {
                 def extIndex = fullName.indexOf(".")
@@ -207,7 +220,6 @@ class FeatureRef extends FeatureModelElement {
      * 
      * @param templEngine
      */
-    
     public void dumpToMetaBuilder(GStringTemplateEngine templEngine) {
         assert templEngine
         
@@ -225,6 +237,14 @@ class FeatureRef extends FeatureModelElement {
     }
 
     
+    private static def setDefaultTraverseOptions(options) {
+        assert options!=null, "options must not be null"
+
+        options.selection = options.selection ?: ALL //Elvis operator
+        options.deep = options.deep ?: true //Elvis operator
+    }
+
+
     /**
      * 
      * @param map
@@ -233,22 +253,25 @@ class FeatureRef extends FeatureModelElement {
      * @return
      */
     private def traverseMap( Map options, String mapName, Closure cl ) {
-        final Type type = options.type ?: Type.ALL //Elvis operator
-        
+        final Type selection = options.type
+        final Boolean deep   = options.deep
+
         this."$mapName".each { String name, modelElement ->
             if(modelElement instanceof FeatureRef ) {
 
-                //Goto deeper in the tree
-                modelElement.traverse(options, cl)
-
-                //Execute closue for the choosen type only
-                if(type == Type.ALL || type == Type.FEATURE) {
+                //Execute closure for the chosen type only
+                if(selection == ALL || selection == FEATURE) {
                     cl(mapName, modelElement)
+                }
+
+                //Go deeper in the tree
+                if(deep) {
+                    modelElement.traverse(options, cl)
                 }
             }
             else if(modelElement instanceof ScenarioRef) {
-                //Execute closue for the choosen type only
-                if(type == Type.ALL || type == Type.SCENARIO) {
+                //Execute closure for the chosen type only
+                if(selection == ALL || selection == SCENARIO) {
                     cl(mapName, modelElement)
                 }
             }
@@ -258,20 +281,71 @@ class FeatureRef extends FeatureModelElement {
         }
     }
 
-    
-    def traverse(Closure cl) {
+
+    public void traverse(Closure cl) {
         traverse([:], cl)
     }
 
 
-    def traverse(Map options, Closure cl) {
-        log.info "options: " + options
+    public void traverse(Map options, Closure cl) {
+        setDefaultTraverseOptions(options)
+
+        log.info "$name - options: " + options
+
+        final Type selection = options.selection
+
+        assert selection, "traverse requires options.selection"
         
         traverseMap(options, "mandatory", cl)
         traverseMap(options, "optional", cl)
         traverseMap(options, "alternative", cl)
         traverseMap(options, "or", cl)
-        
+
         traverseMap(options, "scenarios", cl)
+    }
+
+    /**
+     * If isolated run feature script before each scenario script
+     * else run feature script only once before all scenario scripts
+     * Also initialise DSL context/binding for each feature script run
+     * 
+     * @param feature the current feature to be run
+     * @param isolated
+     * @param dry do not execute closures
+     * @return
+     */
+    private static def executeScenarios(feature, isolated, dry) {
+        DSLEngine engine = null
+
+        feature.scenarios.each { k,v ->
+            if(isolated || (!isolated && !engine)) {
+                engine = new DSLEngine(new Binding(dryRun:dry))
+                engine.run(feature.dslFile.absolutePath)
+            }
+
+            engine.run(v.dslFile.absolutePath)
+        }
+    }
+
+
+    public void execute() {
+        execute([:])
+    }
+
+    
+    public void execute(Map options) {
+        final Boolean deep     = options.deep      ?: false
+        final Boolean dry      = options.dry       ?: false
+        final Boolean isolated = options.isolated  ?: true
+
+        log.info "Executing from feature: $dslFile.absolutePath"
+
+        executeScenarios(this, isolated, dry)
+
+        if(deep) {
+            traverse( selection: FEATURE, deep: true ) { mapName, modelElement ->
+                executeScenarios(modelElement, isolated, dry)
+            }
+        }
     }
 }

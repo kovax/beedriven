@@ -9,13 +9,13 @@ import org.slf4j.LoggerFactory;
 
 abstract class FeatureModelElement {
 
-    protected static final templateName = "FeatureModelElement" 
-
-    public enum Type { ALL, FEATURE, SCENARIO }
+    protected static final String templateName = "FeatureModelElement"
+    
+    public enum Type { ALL, REQUIRED, FEATURE, SCENARIO }
 
     /**
      * The name of the Scenario or Feature.
-     * Must be identcal with the Scenario/Feature file name (without extension) 
+     * Must be identical with the Scenario/Feature file name (without extension)
      * or with name of the Scenario inside of the Feature file.
      * 
      * TODO: apply rule to accept characters which are valid for file name only (this is only for gui probably)
@@ -23,14 +23,20 @@ abstract class FeatureModelElement {
     String name = ""
 
     /**
-    * cannot be null
+    *
     */
-    File dslFile
+    File dslFile = null
 
+    /**
+     * In 'alternative' and 'or' collection the Feature must be selected in order to compute the proper semantics
+     */
+    Boolean selected
+    
+    
     /**
      * Regexp to split CamelCase string into words
      *     
-     * @param s the camelCase string, normali a file name
+     * @param s the camelCase string, normally a file name
      * @return string split into words
      */
     public static String splitCamelCase(String s) {
