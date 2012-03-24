@@ -1,12 +1,19 @@
 package org.beedom.beedriven.model
 
-import groovy.xml.MarkupBuilder;
+import groovy.util.ConfigObject;
+import groovy.util.logging.Slf4j
 
-import java.io.File;
+import java.io.File
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.beedom.dslforge.ReportRenderer;
+import org.beedom.dslforge.SimpleRenderer;
 
+/**
+ * 
+ * @author kovax
+ *
+ */
+@Slf4j
 abstract class FeatureModelElement {
 
     protected static final String templateName = "FeatureModelElement"
@@ -33,6 +40,9 @@ abstract class FeatureModelElement {
     Boolean selected
     
     
+    protected ConfigObject config
+    
+    
     /**
      * Regexp to split CamelCase string into words
      *     
@@ -50,8 +60,7 @@ abstract class FeatureModelElement {
             " "
         );
     }
-
-
+    
     /**
      * 
      * @param f
@@ -68,5 +77,16 @@ abstract class FeatureModelElement {
         else {
             f.getName()
         }
+    }
+    
+
+    public File createNewReportFile(String reportDir, String fileDirPath, SimpleRenderer.ReportType type) {
+        //make the full directory structure
+        new File(reportDir+"/"+fileDirPath).mkdirs()
+        
+        log.debug "create file:" + reportDir+"/"+fileDirPath+"/"+name+"."+SimpleRenderer.getFileExt(type)
+        def f = new File(reportDir+"/"+fileDirPath+"/"+name+"."+type)
+        f.createNewFile()
+        return f
     }
 }

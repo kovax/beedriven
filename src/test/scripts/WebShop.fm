@@ -22,7 +22,7 @@ FeatureModel {
                                 executed  = false
                                 failed = false
                             }
-                            ScenarioRef(name: "ForgottenPassword") {
+                            ScenarioRef(name: "ForgotPassword") {
                                 implemented = true
                                 automated = false
                                 executed  = false

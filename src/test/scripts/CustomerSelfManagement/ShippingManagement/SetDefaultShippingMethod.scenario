@@ -1,6 +1,7 @@
 scenario "Set default shipping method", { 
-    given "Logged in user"
-    given "User is on the Profile page"
-    when "User selects a shipment method in the 'Default Shipment Method' section and clicks 'Set Default'"
+    given "Logged in Customer"
+    and "Customer is on the Profile page"
+    when "Customer selects a shipment method in the 'Default Shipment Method' section"
+    and "clicks 'Set Default'"
     then "The selected option's radio button should stay checked after page reload"
 }

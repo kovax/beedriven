@@ -7,7 +7,7 @@ class ExecuteModelTests extends TestBase {
 
     @Test
     public void executeOneFeature() {
-        dsle.run("WebShop.fm")
+        dsle.run("src/test/scripts/WebShop.fm")
         context.myFirstWebShop.scanFiles(new File("src/test/scripts"))
 
         context.myFirstWebShop.optional.CustomerSelfManagement.mandatory.ShippingManagement.execute(deep: false, dry: false, isolated: false)
@@ -20,7 +20,7 @@ class ExecuteModelTests extends TestBase {
 
     @Test
     public void executeOneFeatureIsolated() {
-        dsle.run("WebShop.fm")
+        dsle.run("src/test/scripts/WebShop.fm")
         context.myFirstWebShop.scanFiles(new File("src/test/scripts"))
 
         context.myFirstWebShop.optional.CustomerSelfManagement.mandatory.ShippingManagement.execute(deep: false, dry: false, isolated: true)
@@ -33,14 +33,20 @@ class ExecuteModelTests extends TestBase {
 
     @Test
     public void executeFeaturesIsolatedDeep() {
-        dsle.run("WebShop.fm")
+        dsle.run("src/test/scripts/WebShop.fm")
         context.myFirstWebShop.scanFiles(new File("src/test/scripts"))
 
-        context.myFirstWebShop.optional.CustomerSelfManagement.execute(deep: true, isolated: true)
+        context.myFirstWebShop.optional.CustomerSelfManagement.execute(deep: true, dry: false, isolated: true, report: 'txt')
 
-        assert context.myFirstWebShop.optional.CustomerSelfManagement.mandatory.ShippingManagement.scenarios.SetDefaultShippingAddress.executed
         //TODO: test Feature was run for each scenario - HOW to test it??? - probably check generated report
+        assert context.myFirstWebShop.optional.CustomerSelfManagement.mandatory.ShippingManagement.scenarios.SetDefaultShippingAddress.executed
+        assert context.myFirstWebShop.optional.CustomerSelfManagement.mandatory.WebPageManagement.scenarios.EditWebPage.executed
 
         assert !context.myFirstWebShop.optional.CustomerSelfManagement.mandatory.ShippingManagement.scenarios.SetDefaultShippingAddress.implemented
+        
+        def f = new File("build/reports/src/test/scripts/CustomerSelfManagement/ShippingManagement/ShippingManagement.txt")
+        assert f.exists()
+        assert f.grep(~/Shipping/)
     }
+
 }

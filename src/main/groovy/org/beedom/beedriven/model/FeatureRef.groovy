@@ -1,23 +1,20 @@
 package org.beedom.beedriven.model
 
-import groovy.text.GStringTemplateEngine;
+import static org.beedom.beedriven.model.FeatureModelElement.Type.*
+import groovy.text.GStringTemplateEngine
+import groovy.util.ConfigObject;
+import groovy.util.logging.Slf4j
 
-import groovy.xml.MarkupBuilder;
+import java.io.File
+import java.util.Map
 
-import java.util.List;
-import java.util.Map;
-
-import javax.management.RuntimeErrorException;
-import javax.naming.InvalidNameException;
-
-import java.io.File;
+import javax.naming.InvalidNameException
 
 import org.beedom.beedriven.model.FeatureModelElement.Type
-import static org.beedom.beedriven.model.FeatureModelElement.Type.*
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory
-import org.beedom.dslforge.DSLEngine;
+import org.beedom.dslforge.DSLEngine
+import org.beedom.dslforge.ReportRenderer;
+import org.beedom.dslforge.SimpleRenderer;
+import org.beedom.dslforge.SimpleRenderer.ReportType;
 
 
 /**
@@ -25,24 +22,23 @@ import org.beedom.dslforge.DSLEngine;
  * @author kovax
  *
  */
+@Slf4j
 class FeatureRef extends FeatureModelElement {
 
-    protected static Logger log = LoggerFactory.getLogger(FeatureRef.class);
-    
-    protected static final template = FeatureRef.class.getResource("FeatureRef.template")
-    
+    protected static final template = FeatureRef.class.getResource("FeatureRef.template")    
     protected static final templateName = "FeatureRef"
-
 
     /**
      * This is only for MetaBuilder support
      */
     FeatureRef() {
+        //TODO: make this configurable
+        config = new ConfigSlurper("development").parse(new File("conf/DSLConfig.groovy").toURI().toURL())
     }
 
     /**
      * 
-     * @param f is the directory
+     * @param dir is the directory
      */
     FeatureRef(File dir) {
         assert dir && dir.exists() && dir.isDirectory(), "Directory '${dir.getName()}' must exists"
@@ -51,6 +47,9 @@ class FeatureRef extends FeatureModelElement {
         dslFile = new File(dir, name+".feature")
 
         assert dslFile.exists(), "Directory '${dir.getName()}' must contain a file: ${name}.feature"
+        
+        //TODO: make this configurable
+        config = new ConfigSlurper("development").parse(new File("conf/DSLConfig.groovy").toURI().toURL())
     }
 
     /**
@@ -95,15 +94,6 @@ class FeatureRef extends FeatureModelElement {
 
 
     /**
-     *     
-     * @param name
-     * @return
-     */
-    public File createFeatureFile(String name) {
-    }
-
-
-    /**
      * 
      */
     private Closure sortByTypeThenName = { a, b ->
@@ -118,8 +108,6 @@ class FeatureRef extends FeatureModelElement {
      * @return
      */
     private static Map getSubFeature(FeatureRef feature, String name) {
-        log.info "Searching subfeature $name in ${feature.name}"
-        
         if(feature.mandatory."$name") {
             return [type: "mandatory", ref: feature.mandatory."$name"]
         }
@@ -143,9 +131,8 @@ class FeatureRef extends FeatureModelElement {
      * @param dir
      */
     public void scanFiles( File dir ) {
-
         dir.traverse( sort: sortByTypeThenName, maxDepth: 0 ) { File f ->
-            log.debug f.toURI().toURL().toString()
+            log.info "scanFiles: " + f.toURI().toURL().toString()
             def fullName = f.name
 
             if( f.isFile() ) {
@@ -183,7 +170,7 @@ class FeatureRef extends FeatureModelElement {
                         break
 
                     default :
-                        throw new InvalidNameException("Extension '$ext' is invalid, must be either feature, scenario or fm")
+                        //throw new InvalidNameException("Extension '$fileExt' is invalid, must be either feature, scenario or fm")
                         break
                 }
             }
@@ -206,8 +193,8 @@ class FeatureRef extends FeatureModelElement {
             }
         }
     }
-    
-    
+
+
     /**
      * 
      */
@@ -236,12 +223,18 @@ class FeatureRef extends FeatureModelElement {
         println mbFormat.toString()
     }
 
-    
-    private static def setDefaultTraverseOptions(options) {
-        assert options!=null, "options must not be null"
 
-        options.selection = options.selection ?: ALL //Elvis operator
-        options.deep = options.deep ?: true //Elvis operator
+    /**
+     * 
+     * @param options
+     */
+    private static void setDefaultTraverseOptions(Map options) {
+        assert options != null, "options must not be null"
+
+        if(options.get("type")     == null) { options.type     = ALL   }
+        if(options.get("deep")     == null) { options.deep     = true  }
+        if(options.get("dry")      == null) { options.dry      = false }
+        if(options.get("isolated") == null) { options.isolated = true  }
     }
 
 
@@ -252,13 +245,12 @@ class FeatureRef extends FeatureModelElement {
      * @param cl
      * @return
      */
-    private def traverseMap( Map options, String mapName, Closure cl ) {
+    private def traverseMap(Map options, String mapName, Closure cl) {
         final Type selection = options.type
         final Boolean deep   = options.deep
 
         this."$mapName".each { String name, modelElement ->
             if(modelElement instanceof FeatureRef ) {
-
                 //Execute closure for the chosen type only
                 if(selection == ALL || selection == FEATURE) {
                     cl(mapName, modelElement)
@@ -290,12 +282,8 @@ class FeatureRef extends FeatureModelElement {
     public void traverse(Map options, Closure cl) {
         setDefaultTraverseOptions(options)
 
-        log.info "$name - options: " + options
+        log.info "traverse $name - options: " + options
 
-        final Type selection = options.selection
-
-        assert selection, "traverse requires options.selection"
-        
         traverseMap(options, "mandatory", cl)
         traverseMap(options, "optional", cl)
         traverseMap(options, "alternative", cl)
@@ -304,47 +292,73 @@ class FeatureRef extends FeatureModelElement {
         traverseMap(options, "scenarios", cl)
     }
 
+
     /**
      * If isolated run feature script before each scenario script
-     * else run feature script only once before all scenario scripts
-     * Also initialise DSL context/binding for each feature script run
+     * else run feature script only once before all scenario scripts.
+     * Also initialise DSL context/binding for each feature script run.
      * 
      * @param feature the current feature to be run
      * @param isolated
      * @param dry do not execute closures
      * @return
      */
-    private static def executeScenarios(feature, isolated, dry) {
-        DSLEngine engine = null
+    private void executeScenarios(boolean isolated, boolean dry, ReportType reportType) {
+        //TODO: share engine and context for deep execution; make it configurable
+        DSLEngine engine  = null
+        Binding   context = null
 
-        feature.scenarios.each { k,v ->
+        def file     = createNewReportFile(config.beedriven.reportDir, dslFile.parentFile.path, reportType)
+        def writer   = new PrintWriter(new BufferedWriter(new FileWriter(file)))
+        def reporter = new SimpleRenderer(writer, reportType)
+
+        scenarios.each { k,scenario ->
             if(isolated || (!isolated && !engine)) {
-                engine = new DSLEngine(new Binding(dryRun:dry))
-                engine.run(feature.dslFile.absolutePath)
+                context = new Binding( dryRun: dry )
+                engine  = new DSLEngine(context: context, dslConfig: config, reporter: reporter)
+
+                engine.run(dslFile.path)
             }
 
-            engine.run(v.dslFile.absolutePath)
+            log.debug "Execute scenario: $scenario.name"
+            //scenario.createNewReportFile(config.beedriven.reportDir, dslFile.parentFile.path, reportType)
+            engine.run(scenario.dslFile.path)
+
+            //scenario was executed if it was not a dry run
+            scenario.executed = !dry
         }
+
+        writer.close()
     }
 
 
+    /**
+     *     
+     */
     public void execute() {
         execute([:])
     }
 
-    
+
+    /**
+     * 
+     * @param options
+     */
     public void execute(Map options) {
-        final Boolean deep     = options.deep      ?: false
-        final Boolean dry      = options.dry       ?: false
-        final Boolean isolated = options.isolated  ?: true
+        log.info "execute feature: ${dslFile.path}"
+        
+        options.report = options.report ?: SimpleRenderer.ReportType.TXT
 
-        log.info "Executing from feature: $dslFile.absolutePath"
+        executeScenarios(options.isolated, options.dry, options.report)
 
-        executeScenarios(this, isolated, dry)
+        if(options.deep) {
+            setDefaultTraverseOptions(options)
+            options.type = FEATURE
 
-        if(deep) {
-            traverse( selection: FEATURE, deep: true ) { mapName, modelElement ->
-                executeScenarios(modelElement, isolated, dry)
+            log.debug "execute deep options:$options"
+
+            traverse( options ) { mapName, feature ->
+                feature.executeScenarios(options.isolated, options.dry, options.report)
             }
         }
     }

@@ -1,0 +1,6 @@
+scenario "Wrong Login", {
+    given "a registered Customer"
+    and "the main page is opened"
+    when "information entered is incorrect"
+    then "Error message describing the error should be shown on the login page"
+}

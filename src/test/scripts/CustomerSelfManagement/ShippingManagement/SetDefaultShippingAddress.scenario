@@ -1,7 +1,8 @@
-scenario "Set default shipping destination address", {
-    given "Logged in user"
-    given "User is on the Profile page"
-    when "User has more shipping addresses or has no default set"
-    when "User clicks any of the available 'SET DEFAULT' links"
-    then "The selected address becomes the default, 'Is default' text is showed in Contact Information"
+scenario "Set default shipping address", {
+    given "Logged in Customer"
+    and "Customer is on the Profile page"
+    when "Customer has more shipping addresses or has no default set"
+    and "Customer clicks any of the available 'SET DEFAULT' links"
+    then "The selected address becomes the default"
+    and "'Is default' text is showed in Contact Information"
 }

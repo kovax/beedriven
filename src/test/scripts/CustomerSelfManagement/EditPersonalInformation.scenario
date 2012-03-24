@@ -1,11 +1,12 @@
 scenario "Edit Personal Information", {
     given "Logged in user"
-    given "User is on the Edit Personal Information page"
+    and "User is on the Edit Personal Information page"
     when "User fills every mandatory field in the form"
     then "Page should be redirected to the profile screen"
     and  "the updated information should be showed"
     and "In the top-right corner, the username should change given it was changed by the user"
     
     when "User leaves a mandatory field empty"
-    then "No information changes, error message describing the error should be showed"
+    then "Error message describing the error shall be shown"
+    and "no information changed in database"
 }

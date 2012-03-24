@@ -4,13 +4,4 @@ scenario "Login", {
     when "Customer enters correct username and a password on the login page in the appropriate fields" 
     then "the main page is opened"
     and "username is shown"
-    when "information entered is incorrect"
-    then "Error message describing the error should be shown on the login page"
-}
-
-scenario "Wrong Login", {
-    given "a registered Customer"
-    and "the main page is opened"
-    when "information entered is incorrect"
-    then "Error message describing the error should be shown on the login page"
 }

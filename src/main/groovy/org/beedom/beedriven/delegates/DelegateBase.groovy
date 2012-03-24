@@ -1,10 +1,18 @@
 package org.beedom.beedriven.delegates
 
 
+import groovy.util.logging.Slf4j
+
+/**
+ * 
+ * @author kovax
+ *
+ */
+@Slf4j
 class DelegateBase {
     String name = ""
     String description = ""
-
+    
     def nesting = 0
     static sharedInstance
     
@@ -13,24 +21,10 @@ class DelegateBase {
             name = n
         }
         nesting++
-        println "$name: initialise - newsting level = $nesting."
+        log.info "initialise - $name, nesting level = $nesting."
     }
     
     def destroy() {
         nesting--
     }
-
-    def doThisAlways(String method, String desc, Closure cl ) {
-        doThisAlways(null, method, desc, cl)
-    }
-
-    def doThisAlways(String dslAlias, String method, String desc, Closure cl ) {
-        if(dslAlias) println "$dslAlias($method) $name - $desc"
-        else println "$name: $method - $desc"
-
-        if(cl && !context.dryRun) {
-            cl()
-        }
-    }
-
 }

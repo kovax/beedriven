@@ -14,7 +14,7 @@ class FeatureModelTests extends TestBase {
     
 	@Test
 	public void loadModel() {
-        dsle.run("WebShop.fm")
+        dsle.run("src/test/scripts/WebShop.fm")
         
         assert context.myFirstWebShop
         assert context.myFirstWebShop.optional.CustomerSelfManagement
@@ -23,7 +23,7 @@ class FeatureModelTests extends TestBase {
     
     @Test
     public void scanRoot() {
-        dsle.run("WebShop.fm")
+        dsle.run("src/test/scripts/WebShop.fm")
 
         assert !context.myFirstWebShop.mandatory.Security.mandatory.CustomerAuthentication.scenarios.Registration
         
@@ -56,25 +56,33 @@ class FeatureModelTests extends TestBase {
 
     @Test
     public void traverseFeatures() {
-        dsle.run("WebShop.fm")
+        dsle.run("src/test/scripts/WebShop.fm")
         context.myFirstWebShop.scanFiles(new File("src/test/scripts"))
         
         context.myFirstWebShop.traverse( type: Type.FEATURE ) { String type, modelElement ->
+            assert modelElement
             assert modelElement instanceof FeatureRef
-            if(modelElement.dslFile)
-                assert modelElement.dslFile.name.endsWith(".feature")
+            assert modelElement.dslFile
+            assert modelElement.dslFile.name.endsWith(".feature")
         }
     }
 
     @Test
     public void traverseScenarios() {
-        dsle.run("WebShop.fm")
+        dsle.run("src/test/scripts/WebShop.fm")
         context.myFirstWebShop.scanFiles(new File("src/test/scripts"))
         
         context.myFirstWebShop.traverse( type: Type.SCENARIO ) { String type, modelElement ->
+            assert modelElement
             assert modelElement instanceof ScenarioRef
-            if(modelElement.dslFile)
+
+            if(modelElement.name == "ForgottenPassword") {
+                assert !modelElement.dslFile //There is no ForgottenPassword.scenario
+            }
+            else {
+                assert modelElement.dslFile
                 assert modelElement.dslFile.name.endsWith(".scenario")
+            }
         }
     }
 }

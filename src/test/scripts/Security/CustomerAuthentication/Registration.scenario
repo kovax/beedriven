@@ -10,7 +10,7 @@ scenario "New Customers should receive discounts", {
     given "a newly registered Customers"
     when "the Customers adds a product to a basket"
     then "the Customers shall see a 5% discount applied to their basket"
-    then "the Customers shall be able to confirm the order"
-    then "the Customers shall receive an email containing the order"
-    then "MA shall be able to fullfill the order"
+    and "the Customers shall be able to confirm the order"
+    and "the Customers shall receive an email containing the order"
+    and "company shall be able to fullfill the order"
 }

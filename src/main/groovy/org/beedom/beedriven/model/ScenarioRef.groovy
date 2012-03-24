@@ -1,9 +1,11 @@
 package org.beedom.beedriven.model
 
-import groovy.xml.MarkupBuilder;
+import groovy.util.logging.Slf4j
 
-import java.io.File;
+import java.io.File
 
+
+@Slf4j
 class ScenarioRef extends FeatureModelElement {
 
     /**

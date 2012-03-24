@@ -1,13 +1,13 @@
 package org.beedom.beedriven.model
 
-import groovy.xml.MarkupBuilder;
-
-import java.util.List;
 import java.util.Map;
-import java.io.File;
 
-import javax.naming.InvalidNameException;
+import static org.beedom.beedriven.model.FeatureModelElement.Type.*
 
+import org.beedom.dslforge.SimpleRenderer;
+import org.beedom.dslforge.SimpleRenderer.ReportType;
+
+import groovy.util.logging.Slf4j
 
 
 /**
@@ -15,13 +15,30 @@ import javax.naming.InvalidNameException;
  * @author kovax
  *
  */
+@Slf4j
 class FeatureModel extends FeatureRef {
 
     protected static final templateName = "ProductRef"
 
-    /**
-     * 
-     */
-    String  version = ""
-    
+    String version = ""
+
+    public void execute() {
+        execute([:])
+    }
+
+    public void execute(Map options) {
+        setDefaultTraverseOptions(options)
+        options.type = FEATURE
+
+        log.debug "execute - options:$options"
+
+        traverse( options ) { mapName, feature ->
+            feature.execute(options)
+        }
+    }
+
+    public void generateReport(ReportType type) {
+        assert type, "Specify the type of the report"
+        execute(deep: true, dry: true, isolated: false, report: type)
+    }
 }

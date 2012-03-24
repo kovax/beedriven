@@ -16,9 +16,9 @@ class TestBase {
 	public void init() {
 		context = new Binding()
         context.mbSchemaFiles = ["src/main/conf/FeatureModelSchema.groovy"]
-        
+
         if(!dsle) {
-            dsle = new DSLEngine(context)
+            dsle = new DSLEngine(context: context)
         }
 	}
 }
