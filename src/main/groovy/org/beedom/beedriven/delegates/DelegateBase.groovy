@@ -10,16 +10,15 @@ import groovy.util.logging.Slf4j
  */
 @Slf4j
 class DelegateBase {
+
     String name = ""
     String description = ""
-    
-    def nesting = 0
-    static sharedInstance
-    
-    def init(String n) {
-        if(n) {
-            name = n
-        }
+
+    private int nesting = 0
+    static def sharedInstance
+
+    public void init(String n) {
+        if(n) { name = n }
         nesting++
         log.info "initialise - $name, nesting level = $nesting."
     }

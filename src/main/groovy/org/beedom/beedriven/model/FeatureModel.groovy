@@ -16,7 +16,7 @@ import groovy.util.logging.Slf4j
  *
  */
 @Slf4j
-class FeatureModel extends FeatureRef {
+class FeatureModel extends FeatureFile {
 
     protected static final templateName = "ProductRef"
 

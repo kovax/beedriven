@@ -1,7 +1,6 @@
-
 scenario "View sent/received messages", {
     given "Logged in user"
-    given "User is on the profile page"
+    and "User is on the profile page"
     when "User clicks View Sent and Received link in the Messages section"
     then "A new page should appear, listing the sent and received messages of the user"
 }

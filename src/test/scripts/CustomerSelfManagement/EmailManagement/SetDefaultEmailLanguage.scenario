@@ -1,6 +1,6 @@
 scenario "Set default email language", {
     given "Logged in user"
-    given "User is on the User Profile page"
+    and "User is on the User Profile page"
     when "User selects a language from the combobox"
     then "Default language of emails should change. Language of emails received by user should change according to the change"
 }

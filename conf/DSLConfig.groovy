@@ -11,7 +11,7 @@ environments {
         }
 
         beedriven {
-            reportDir = 'build/reports'
+            reportDir = 'build/reports/beedriven'
         }
     }
 }

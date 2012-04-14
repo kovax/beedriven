@@ -1,6 +1,6 @@
 scenario "Create New Address", {
     given "Logged in user"
-    given "User is on the Create New Contact Information page"
+    and "User is on the Create New Contact Information page"
     when "The user selects Postal Address from the combobox and clicks the Create button"
     then "A form should appear, asking for address information"
     when "User fills every field correctly"

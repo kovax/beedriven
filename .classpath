@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/groovy"/>
 	<classpathentry kind="src" path="src/test/groovy"/>
-	<classpathentry kind="src" path="src/test/scripts"/>
+	<classpathentry kind="src" path="src/main/groovy"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry exported="true" kind="con" path="GROOVY_SUPPORT"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/dslforge"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?ivyXmlPath=ivy.xml&amp;confs=*"/>
+	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=beedriven&amp;ivyXmlPath=ivy.xml&amp;confs=*"/>
 	<classpathentry exported="true" kind="con" path="GROOVY_DSL_SUPPORT"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/commons-cli/commons-cli/c12498cf18507aa6433a94eb7d3e77d5/jars/commons-cli-1.2.jar" sourcepath="C:/Users/kovax/.gradle/caches/artifacts-4/commons-cli/commons-cli/c12498cf18507aa6433a94eb7d3e77d5/sources/commons-cli-1.2-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/ch.qos.logback/logback-classic/c12498cf18507aa6433a94eb7d3e77d5/jars/logback-classic-1.0.0.jar" sourcepath="C:/Users/kovax/.gradle/caches/artifacts-4/ch.qos.logback/logback-classic/c12498cf18507aa6433a94eb7d3e77d5/sources/logback-classic-1.0.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/junit/junit/c12498cf18507aa6433a94eb7d3e77d5/jars/junit-4.10.jar" sourcepath="C:/Users/kovax/.gradle/caches/artifacts-4/junit/junit/c12498cf18507aa6433a94eb7d3e77d5/sources/junit-4.10-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/org.codehaus.groovy/groovy/c12498cf18507aa6433a94eb7d3e77d5/jars/groovy-1.8.4.jar" sourcepath="C:/Users/kovax/.gradle/caches/artifacts-4/org.codehaus.groovy/groovy/c12498cf18507aa6433a94eb7d3e77d5/sources/groovy-1.8.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/org.slf4j/slf4j-api/c12498cf18507aa6433a94eb7d3e77d5/jars/slf4j-api-1.6.4.jar" sourcepath="C:/Users/kovax/.gradle/caches/artifacts-4/org.slf4j/slf4j-api/c12498cf18507aa6433a94eb7d3e77d5/sources/slf4j-api-1.6.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/ch.qos.logback/logback-core/c12498cf18507aa6433a94eb7d3e77d5/jars/logback-core-1.0.0.jar" sourcepath="C:/Users/kovax/.gradle/caches/artifacts-4/ch.qos.logback/logback-core/c12498cf18507aa6433a94eb7d3e77d5/sources/logback-core-1.0.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/net.sf.opencsv/opencsv/c12498cf18507aa6433a94eb7d3e77d5/jars/opencsv-2.3.jar" sourcepath="C:/Users/kovax/.gradle/caches/artifacts-4/net.sf.opencsv/opencsv/c12498cf18507aa6433a94eb7d3e77d5/sources/opencsv-2.3-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/org.hamcrest/hamcrest-core/c12498cf18507aa6433a94eb7d3e77d5/jars/hamcrest-core-1.2.1.jar" sourcepath="C:/Users/kovax/.gradle/caches/artifacts-4/org.hamcrest/hamcrest-core/c12498cf18507aa6433a94eb7d3e77d5/sources/hamcrest-core-1.2.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/org.hamcrest/hamcrest-library/c12498cf18507aa6433a94eb7d3e77d5/jars/hamcrest-library-1.2.1.jar" sourcepath="C:/Users/kovax/.gradle/caches/artifacts-4/org.hamcrest/hamcrest-library/c12498cf18507aa6433a94eb7d3e77d5/sources/hamcrest-library-1.2.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/org.hamcrest/hamcrest-integration/c12498cf18507aa6433a94eb7d3e77d5/jars/hamcrest-integration-1.2.1.jar" sourcepath="C:/Users/kovax/.gradle/caches/artifacts-4/org.hamcrest/hamcrest-integration/c12498cf18507aa6433a94eb7d3e77d5/sources/hamcrest-integration-1.2.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/antlr/antlr/c12498cf18507aa6433a94eb7d3e77d5/jars/antlr-2.7.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/asm/asm/c12498cf18507aa6433a94eb7d3e77d5/jars/asm-3.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/asm/asm-tree/c12498cf18507aa6433a94eb7d3e77d5/jars/asm-tree-3.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/asm/asm-commons/c12498cf18507aa6433a94eb7d3e77d5/jars/asm-commons-3.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/asm/asm-util/c12498cf18507aa6433a94eb7d3e77d5/jars/asm-util-3.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/kovax/.gradle/caches/artifacts-4/asm/asm-analysis/c12498cf18507aa6433a94eb7d3e77d5/jars/asm-analysis-3.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/dslforge"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

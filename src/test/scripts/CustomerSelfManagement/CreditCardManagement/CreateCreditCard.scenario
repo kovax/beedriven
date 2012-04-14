@@ -1,6 +1,6 @@
 scenario "Create credit card", {
     given "Logged in user"
-    given "User is on the Add New Credit Card page"
+    and "User is on the Add New Credit Card page"
     when "User fills every field correctly"
     then "Page should be redirected to the profile page"
     and "the new Credit Card visible in the payment information section"

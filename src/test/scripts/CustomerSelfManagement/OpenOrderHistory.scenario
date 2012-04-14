@@ -1,0 +1,5 @@
+scenario "View order history", {
+    given "Logged in user"
+    when "User clicks Order History link on the Main page"
+    then "New page should appear, listing the orders of the user with the important information"
+}

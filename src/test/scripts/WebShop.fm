@@ -1,28 +1,28 @@
 FeatureModel {
-    ProductRef( name: "MyFirstWebShop", version: "0.1" ) {
+    ProductFile( name: "MyFirstWebShop", version: "0.1" ) {
         optional {
-            FeatureRef( name: "CustomerSelfManagement", selected: true ) {
+            FeatureFile( name: "CustomerSelfManagement", selected: true ) {
                 mandatory {
-                    FeatureRef( name: "AddressManagement" )
-                    FeatureRef( name: "ShippingManagement" )
+                    FeatureFile( name: "AddressManagement" )
+                    FeatureFile( name: "ShippingManagement" )
                 }
             }
         }
 
         mandatory {
-            FeatureRef( name: "Security" ) {
+            FeatureFile( name: "Security" ) {
                 mandatory {
-                    FeatureRef(name: "CustomerAuthentication") {
+                    FeatureFile(name: "CustomerAuthentication") {
                         scenarios {
-                            ScenarioRef(name: "Login")
-                            ScenarioRef(name: "Logout")
-                            ScenarioRef(name: "ChangePassword") {
+                            ScenarioFile(name: "Login")
+                            ScenarioFile(name: "Logout")
+                            ScenarioFile(name: "ChangePassword") {
                                 implemented = true
                                 automated = false
                                 executed  = false
                                 failed = false
                             }
-                            ScenarioRef(name: "ForgotPassword") {
+                            ScenarioFile(name: "ForgotPassword") {
                                 implemented = true
                                 automated = false
                                 executed  = false

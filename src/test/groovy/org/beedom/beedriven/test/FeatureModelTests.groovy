@@ -5,8 +5,8 @@ import org.beedom.beedriven.model.FeatureModelElement;
 import org.junit.Before;
 import org.junit.Test
 import org.beedom.beedriven.model.FeatureModelElement.Type
-import org.beedom.beedriven.model.FeatureRef
-import org.beedom.beedriven.model.ScenarioRef
+import org.beedom.beedriven.model.FeatureFile
+import org.beedom.beedriven.model.ScenarioFile
 
 
 
@@ -61,7 +61,7 @@ class FeatureModelTests extends TestBase {
         
         context.myFirstWebShop.traverse( type: Type.FEATURE ) { String type, modelElement ->
             assert modelElement
-            assert modelElement instanceof FeatureRef
+            assert modelElement instanceof FeatureFile
             assert modelElement.dslFile
             assert modelElement.dslFile.name.endsWith(".feature")
         }
@@ -74,7 +74,7 @@ class FeatureModelTests extends TestBase {
         
         context.myFirstWebShop.traverse( type: Type.SCENARIO ) { String type, modelElement ->
             assert modelElement
-            assert modelElement instanceof ScenarioRef
+            assert modelElement instanceof ScenarioFile
 
             if(modelElement.name == "ForgottenPassword") {
                 assert !modelElement.dslFile //There is no ForgottenPassword.scenario

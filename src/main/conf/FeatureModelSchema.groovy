@@ -1,7 +1,7 @@
 mbObjectKeys = [
     //(org.beedom.beedriven.model.FeatureRef) : {f-> "${f.name}_${f.version}"},
-    (org.beedom.beedriven.model.FeatureRef)   : "name",
-    (org.beedom.beedriven.model.ScenarioRef)  : "name",
+    (org.beedom.beedriven.model.FeatureFile)  : "name",
+    (org.beedom.beedriven.model.ScenarioFile) : "name",
     (org.beedom.beedriven.model.FeatureModel) : "name"
     ]
 
@@ -13,7 +13,7 @@ metaBuilder.define {
         }
     }
     
-    ScenarioRef(schema: 'FeatureModelElement', factory: org.beedom.beedriven.model.ScenarioRef) {
+    ScenarioFile(schema: 'FeatureModelElement', factory: org.beedom.beedriven.model.ScenarioFile) {
         properties {
             implemented()
             automated()
@@ -22,31 +22,31 @@ metaBuilder.define {
         }
     }
 
-    FeatureRef(schema: 'FeatureModelElement', factory: org.beedom.beedriven.model.FeatureRef) {
+    FeatureFile(schema: 'FeatureModelElement', factory: org.beedom.beedriven.model.FeatureFile) {
         properties {
         }
 
         collections {
             scenarios(key:'name') {
-                ScenarioRef(schema: "ScenarioRef")
+                ScenarioFile(schema: "ScenarioFile")
             }
             
             optional(key:'name') {
-                FeatureRef(schema: "FeatureRef")
+                FeatureFile(schema: "FeatureFile")
             }
             mandatory(key:'name') {
-                FeatureRef(schema: "FeatureRef")
+                FeatureFile(schema: "FeatureFile")
             }
             alternative(key:'name') {
-                FeatureRef(schema: "FeatureRef")
+                FeatureFile(schema: "FeatureFile")
             }
             or(key:'name') {
-                FeatureRef(schema: "FeatureRef")
+                FeatureFile(schema: "FeatureFile")
             }
         }
     }
     
-    ProductRef(schema: 'FeatureRef', factory: org.beedom.beedriven.model.FeatureModel) {
+    ProductFile(schema: 'FeatureFile', factory: org.beedom.beedriven.model.FeatureModel) {
         properties {
             version()
         }

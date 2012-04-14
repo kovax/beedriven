@@ -22,7 +22,7 @@ class ReportModelTests extends TestBase {
     public void executeOneFeature() {
         context.myFirstWebShop.generateReport(ReportType.TXT)
 
-        def f = new File("build/reports/src/test/scripts/CustomerSelfManagement/ShippingManagement/ShippingManagement.txt")
+        def f = new File("build/reports/beedriven/src/test/scripts/CustomerSelfManagement/ShippingManagement/ShippingManagement.txt")
 
         assert f.exists()
         assert f.grep(~/Shipping/)

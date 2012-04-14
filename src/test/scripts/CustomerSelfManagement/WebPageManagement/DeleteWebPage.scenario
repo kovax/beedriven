@@ -1,6 +1,5 @@
-
 scenario "Delete web page", {
-    given "Logged in user"
+    and "Logged in user"
     given "User is on the profile page"
     when "User clicks the remove button next to any of the web urls/addresses"
     then "The selected web page should be removed from the contact information section"

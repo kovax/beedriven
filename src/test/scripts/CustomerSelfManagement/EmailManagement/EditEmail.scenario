@@ -1,6 +1,6 @@
 scenario "Edit Email", {
     given "Logged in user"
-    given "User is on the Edit Contact Information page"
+    and "User is on the Edit Contact Information page"
     when "User fills every field correctly"
     then "Page should be redirected to the profile page, with the updated email address visible in the contact information section"
     when "User enters any incorrect value into any of the fields"

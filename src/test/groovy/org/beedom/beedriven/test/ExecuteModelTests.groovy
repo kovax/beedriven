@@ -1,6 +1,7 @@
 package org.beedom.beedriven.test
 
 import org.beedom.beedriven.model.FeatureModelElement.Type
+import org.beedom.dslforge.SimpleRenderer;
 import org.junit.Test
 
 class ExecuteModelTests extends TestBase {
@@ -36,7 +37,7 @@ class ExecuteModelTests extends TestBase {
         dsle.run("src/test/scripts/WebShop.fm")
         context.myFirstWebShop.scanFiles(new File("src/test/scripts"))
 
-        context.myFirstWebShop.optional.CustomerSelfManagement.execute(deep: true, dry: false, isolated: true, report: 'txt')
+        context.myFirstWebShop.optional.CustomerSelfManagement.execute(deep: true, dry: false, isolated: true, report: SimpleRenderer.ReportType.XML)
 
         //TODO: test Feature was run for each scenario - HOW to test it??? - probably check generated report
         assert context.myFirstWebShop.optional.CustomerSelfManagement.mandatory.ShippingManagement.scenarios.SetDefaultShippingAddress.executed

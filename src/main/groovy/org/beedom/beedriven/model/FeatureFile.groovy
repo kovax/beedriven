@@ -23,15 +23,15 @@ import org.beedom.dslforge.SimpleRenderer.ReportType;
  *
  */
 @Slf4j
-class FeatureRef extends FeatureModelElement {
+class FeatureFile extends FeatureModelElement {
 
-    protected static final template = FeatureRef.class.getResource("FeatureRef.template")    
+    protected static final template = FeatureFile.class.getResource("FeatureRef.template")    
     protected static final templateName = "FeatureRef"
 
     /**
      * This is only for MetaBuilder support
      */
-    FeatureRef() {
+    FeatureFile() {
         //TODO: make this configurable
         config = new ConfigSlurper("development").parse(new File("conf/DSLConfig.groovy").toURI().toURL())
     }
@@ -40,7 +40,7 @@ class FeatureRef extends FeatureModelElement {
      * 
      * @param dir is the directory
      */
-    FeatureRef(File dir) {
+    FeatureFile(File dir) {
         assert dir && dir.exists() && dir.isDirectory(), "Directory '${dir.getName()}' must exists"
 
         this.name = getNameFromFile(dir)
@@ -55,28 +55,28 @@ class FeatureRef extends FeatureModelElement {
     /**
      * List of Scenarios which are relevant for this Feature
      */
-    Map<String, ScenarioRef> scenarios = [:]
+    Map<String, ScenarioFile> scenarios = [:]
 
 
     /**
      * Any of these SubFeatures is selected (nice-to-have)
      */
-    Map<String, FeatureRef> optional = [:]
+    Map<String, FeatureFile> optional = [:]
 
     /**
      * All these SubFeatures are selected
      */
-    Map<String, FeatureRef> mandatory = [:]
+    Map<String, FeatureFile> mandatory = [:]
 
     /**
      * Only one of these SubFeatures is selected
      */
-    Map<String, FeatureRef> alternative = [:]
+    Map<String, FeatureFile> alternative = [:]
 
     /**
      * At least one of these SubFeatures is selected
      */
-    Map<String, FeatureRef> or = [:]
+    Map<String, FeatureFile> or = [:]
 
     /*
     def streamit() {
@@ -107,7 +107,7 @@ class FeatureRef extends FeatureModelElement {
      * @param name
      * @return
      */
-    private static Map getSubFeature(FeatureRef feature, String name) {
+    private static Map getSubFeature(FeatureFile feature, String name) {
         if(feature.mandatory."$name") {
             return [type: "mandatory", ref: feature.mandatory."$name"]
         }
@@ -154,14 +154,14 @@ class FeatureRef extends FeatureModelElement {
                         break
 
                     case "scenario" :
-                        ScenarioRef sce = scenarios[fileName]
+                        ScenarioFile sce = scenarios[fileName]
                         if(sce) {
                             log.info "scenario file exists : " + splitCamelCase(fileName)
                             sce.dslFile = f
                         }
                         else {
                             log.info "add scenario '${splitCamelCase(fileName)}'"
-                            scenarios.put(fileName, new ScenarioRef(f))
+                            scenarios.put(fileName, new ScenarioFile(f))
                         }
                         break
 
@@ -170,19 +170,19 @@ class FeatureRef extends FeatureModelElement {
                         break
 
                     default :
-                        //throw new InvalidNameException("Extension '$fileExt' is invalid, must be either feature, scenario or fm")
+                        throw new InvalidNameException("Extension '$fileExt' is invalid, must be either feature, scenario or fm")
                         break
                 }
             }
             else if( f.isDirectory() ) {
-                FeatureRef subFeature = getSubFeature(this,fullName)?.ref //returned map can be null
+                FeatureFile subFeature = getSubFeature(this,fullName)?.ref //returned map can be null
 
                 if(subFeature) {
                     log.info "subfeature exists : "+splitCamelCase(fullName)
                 }
                 else {
                     log.info "add mandatory subfeature : "+splitCamelCase(fullName)
-                    subFeature = new FeatureRef(f)
+                    subFeature = new FeatureFile(f)
                     mandatory.put(fullName,subFeature)
                 }
 
@@ -250,7 +250,7 @@ class FeatureRef extends FeatureModelElement {
         final Boolean deep   = options.deep
 
         this."$mapName".each { String name, modelElement ->
-            if(modelElement instanceof FeatureRef ) {
+            if(modelElement instanceof FeatureFile ) {
                 //Execute closure for the chosen type only
                 if(selection == ALL || selection == FEATURE) {
                     cl(mapName, modelElement)
@@ -261,7 +261,7 @@ class FeatureRef extends FeatureModelElement {
                     modelElement.traverse(options, cl)
                 }
             }
-            else if(modelElement instanceof ScenarioRef) {
+            else if(modelElement instanceof ScenarioFile) {
                 //Execute closure for the chosen type only
                 if(selection == ALL || selection == SCENARIO) {
                     cl(mapName, modelElement)

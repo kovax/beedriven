@@ -6,7 +6,7 @@ import java.io.File
 
 
 @Slf4j
-class ScenarioRef extends FeatureModelElement {
+class ScenarioFile extends FeatureModelElement {
 
     /**
      * The implementation of the Scenario (consequently the Feature) was done or not
@@ -38,14 +38,14 @@ class ScenarioRef extends FeatureModelElement {
     /**
      * This is only for MetaBuilder support
      */
-    ScenarioRef() {
+    ScenarioFile() {
     }
 
 
     /**
      * 
      */
-    ScenarioRef(File f) {
+    ScenarioFile(File f) {
         assert f && f.exists() && f.isFile(), "File must exists"
         dslFile = f
         name = getNameFromFile(f)
