@@ -10,6 +10,7 @@ import java.util.Map
 
 import javax.naming.InvalidNameException
 
+import org.apache.commons.io.FilenameUtils;
 import org.beedom.beedriven.model.FeatureModelElement.Type
 import org.beedom.dslforge.DSLEngine
 import org.beedom.dslforge.ReportRenderer;
@@ -56,7 +57,6 @@ class FeatureFile extends FeatureModelElement {
      * List of Scenarios which are relevant for this Feature
      */
     Map<String, ScenarioFile> scenarios = [:]
-
 
     /**
      * Any of these SubFeatures is selected (nice-to-have)
@@ -136,10 +136,9 @@ class FeatureFile extends FeatureModelElement {
             def fullName = f.name
 
             if( f.isFile() ) {
-                def extIndex = fullName.indexOf(".")
-                def fileExt = fullName.substring(extIndex+1)
-                def fileName = fullName.substring(0,extIndex)
-
+                def fileName = FilenameUtils.getBaseName(fullName)
+                def fileExt  = FilenameUtils.getExtension(fullName)
+                
                 switch(fileExt) {
                     case "feature" :
                         log.info "feature file : " + splitCamelCase(fileName)
@@ -310,7 +309,7 @@ class FeatureFile extends FeatureModelElement {
 
         def file     = createNewReportFile(config.beedriven.reportDir, dslFile.parentFile.path, reportType)
         def writer   = new PrintWriter(new BufferedWriter(new FileWriter(file)))
-        def reporter = new SimpleRenderer(writer, reportType)
+        def reporter = new SimpleRenderer(writer: writer, type: reportType)
 
         scenarios.each { k,scenario ->
             if(isolated || (!isolated && !engine)) {

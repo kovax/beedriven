@@ -33,8 +33,7 @@ class ScenarioDelegate extends SimpleReportingDelegate {
                           then:  ["akkor",    "consequently"]]
     
     def given(Map map) {
-        println "---------------- $map"
-        
+        writeMethod("given", "$map")
     }
 
 }

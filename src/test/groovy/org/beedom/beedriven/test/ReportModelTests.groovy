@@ -9,6 +9,8 @@ import org.junit.Test
 
 
 class ReportModelTests extends TestBase {
+    
+    def root = "build/reports/beedriven/src/test/scripts"
 
     @Before
     public void init() {
@@ -20,11 +22,12 @@ class ReportModelTests extends TestBase {
 
     @Test
     public void executeOneFeature() {
-        context.myFirstWebShop.generateReport(ReportType.TXT)
+        ReportType type = ReportType.XML
+        context.myFirstWebShop.generateReport(type)
 
-        def f = new File("build/reports/beedriven/src/test/scripts/CustomerSelfManagement/ShippingManagement/ShippingManagement.txt")
+        def f = new File("$root/CustomerSelfManagement/ShippingManagement/ShippingManagement."+SimpleRenderer.getFileExt(type))
 
         assert f.exists()
-        assert f.grep(~/Shipping/)
+        assert f.grep(~/Shipping/).size() > 0
     }
 }

@@ -9,9 +9,11 @@ System.setProperty("file.encoding", "UTF-8")
 defaultTasks 'clean', 'build'
 
 version = '0.1-SNAPSHOT'
+mainClass = 'org.beedom.beedriven.model.FeatureModel'
 group = 'org.beedom'
-
 groovyVersion = '1.8.4'
+
+manifest.mainAttributes("Implementation-Title": "BeeDriven", "Implementation-Version": version, "Main-Class": mainClass)
 
 repositories {
     mavenCentral()
@@ -19,9 +21,10 @@ repositories {
 }
 
 dependencies {
-    groovy group: 'org.codehaus.groovy', name: 'groovy', version: '$groovyVersion'
+    groovy group: 'org.codehaus.groovy', name: 'groovy', version: groovyVersion
     
     compile 'org.beedom:dslforge:1.0'
+    compile 'commons-io:commons-io:2.2'
     compile group: 'commons-cli', name: 'commons-cli', version: '1.2'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.6.1'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.0'
